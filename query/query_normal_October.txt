@@ -1,0 +1,1 @@
+(aku OR saya OR gue OR gw OR "rasanya aku") AND ((senang OR bahagia OR semangat OR enjoy OR fun OR seru OR nyaman OR lega OR asyik OR puas OR sukses) OR ((gym OR lari OR futsal OR "naik gunung" OR olahraga OR drakor OR film OR series OR konser) AND (capek OR lelah OR pegal OR nangis OR sedih OR terharu))) since:2025-10-01 until:2025-10-31 lang:id -filter:links -is:retweet

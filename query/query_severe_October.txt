@@ -1,0 +1,1 @@
+(aku OR saya OR gue OR gw) AND (pengen OR mau OR ingin OR "ga kuat" OR cape OR lelah) AND (mati OR "bunuh diri" OR "luka diri" OR hilang OR "berhenti hidup") since:2025-10-01 until:2025-10-31 lang:id -filter:links -is:retweet

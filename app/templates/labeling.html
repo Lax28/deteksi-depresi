@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alat Labeling</title>
+    <style>
+        /* Added responsive design and better styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .tweet-container {
+            padding: 25px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tweet-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+            margin-bottom: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        button {
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button[name="label"][value="Depresi"] {
+            background: linear-gradient(to right, #ff6b6b, #ff4c4c);
+            color: white;
+        }
+        
+        button[name="label"][value="Depresi"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.25);
+        }
+        
+        button[name="label"][value="Tidak Depresi"] {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+        }
+        
+        button[name="label"][value="Tidak Depresi"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.25);
+        }
+        
+        .progress-container {
+            padding: 15px 25px;
+            background: #f8f9fa;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 480px) {
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .tweet-text {
+                font-size: 1rem;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Alat Labeling Deteksi Depresi</h1>
+        </header>
+        
+        <div class="tweet-container">
+            <div class="tweet-text">{{ text }}</div>
+        </div>
+        
+        <form action="/label" method="post">
+            <div class="buttons">
+                <button type="submit" name="label" value="Depresi">Depresi</button>
+                <button type="submit" name="label" value="Tidak Depresi">Tidak Depresi</button>
+            </div>
+        </form>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ (current_index/total)*100 }}%"></div>
+            </div>
+            <div class="progress-text">{{ progress }}</div>
+        </div>
+    </div>
+</body>
+</html>

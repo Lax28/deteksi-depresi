@@ -1,0 +1,1 @@
+(aku OR saya OR gue OR gw OR "rasanya aku") AND (senang OR bahagia OR semangat OR enjoy OR fun OR seru OR nyaman OR lega OR asyik OR puas OR sukses) since:2025-09-01 until:2025-09-30 lang:id -filter:links -is:retweet

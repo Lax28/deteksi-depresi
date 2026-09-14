@@ -1,0 +1,21 @@
+# Environments
+.env
+.venv
+env/
+venv/
+*.conda/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Data & Models (Jangan unggah file CSV dan Model)
+*.csv
+*.h5
+*.pkl
+models/*
+!models/.gitkeep
+Data/*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/

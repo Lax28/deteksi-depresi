@@ -1,0 +1,1 @@
+(aku OR saya OR gue OR gw OR rasanya) AND (sedih OR capek OR lelah OR stres OR bosan OR "ga mood" OR "ga semangat" OR sendirian OR bingung OR jenuh OR kosong) since:2025-08-01 until:2025-08-31 lang:id -filter:links -is:retweet
