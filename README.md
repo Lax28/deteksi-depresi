@@ -39,5 +39,5 @@ Extensive hyperparameter tuning and ablation studies demonstrated that the GRU a
 3. Run the Flask application:
 
     ```Bash
-    python app.py```
+    python app.py
 4. Open your browser and navigate to [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
