@@ -25,7 +25,7 @@ def get_text_processor_resources():
     stop_factory = factory.get_stop_words()
 
     # --- [1] WHITELIST: KATA PENTING ---
-    keep_words = [
+    keep_words = {
         'tidak', 'ga', 'gak', 'gk', 'tdk', 'bukan', 'tak', 'jangan', 'jgn', 'enggak',
         'mau', 'akan', 'ingin', 'pengen', 'bakal', 'niat',
         'diri', 'sendiri', 'bisa', 'masih', 'terus', 'lagi', 'selalu',
@@ -46,7 +46,7 @@ def get_text_processor_resources():
         'guna', 'berguna', 'berharga', 'arti', 'berarti',
         'ada', 'tiada', 'hilang', 'lenyap', 'pergi',
         'hidup', 'mati', 'bunuh', 'akhiri',
-    ]
+    }
 
     # --- [2] BLACKLIST: KATA SAMPAH ---
     more_stopwords = [

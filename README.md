@@ -14,7 +14,9 @@ An end-to-end AI-powered web application designed to classify depression risk le
 - **Text Preprocessing (`src/preprocessing.py` & `src/slang_dict.json`):** Custom slang normalization and whitelist-based stopword removal to retain crucial negation words and implicit emotional markers.
 - **Feature Selection:** TF-IDF (Term Frequency-Inverse Document Frequency) vocabulary filtration.
 - **Deep Learning Model (TF-IDF + GRU):** Gated Recurrent Unit (GRU) architecture with Spatial Dropout and L2 Regularization. On the thesis evaluation dataset, **TF-IDF + GRU** achieved **98.67% accuracy** and **98.67% macro F1-score**, outperforming the Stacked LSTM baseline in both accuracy and training efficiency.
-- **Post-Processing (Positive Guard):** A transparent heuristic layer in Flask (`app/main.py`) to reduce false positives on casual or resilient positive expressions (e.g., *"tetap semangat"*). When triggered, the predicted label is adjusted to **Normal** with an explicit **Adjusted by Positive Guard** indicator while still displaying the model's raw probability distribution.
+- **Post-Processing (Positive Guard):** A transparent heuristic layer in Flask (`app/main.py`) to reduce false positives on casual or resilient positive expressions (e.g., *"tetap semangat"*). When triggered (`pos_count >= 2`, `pos_score >= 2`, and no negation token within 2 words before a positive token), the predicted label is adjusted to **Normal** with an explicit **Adjusted by Positive Guard** indicator while still displaying the model's raw probability distribution.
+  - Decision thresholds in `app/main.py`: `THRESHOLD_SEVERE = 0.35`, `THRESHOLD_MODERATE = 0.45` (Severe takes priority above `0.35`, followed by Positive Guard, then Moderate above `0.45` and greater than Normal, otherwise Normal).
+  - Input limits: maximum `1000` characters per request (`MAX_INPUT_LENGTH = 1000`) and padded sequence length `100` tokens (`MAX_LEN = 100`).
 
 ## 📊 Key Results
 
@@ -29,7 +31,11 @@ An end-to-end AI-powered web application designed to classify depression risk le
 
 ![Confusion Matrix](reports/figures/outputCM.png)
 
+*Confusion matrix across 1,514 evaluation samples (`Normal`: 510/525, `Moderate`: 470/480, `Severe`: 506/509; overall 98.15% accuracy).*
+
 ![Training & Validation Accuracy and Loss Curves](reports/figures/outputgrafiklossdanakurasi.png)
+
+*Training and validation accuracy/loss curves over 8 epochs (0–7) from `notebooks/train_model.ipynb`.*
 
 ## 📁 Project Structure
 
@@ -87,6 +93,8 @@ deteksi_depresi/
    *(or `python -m app.main`)*
 
 5. Open your browser and navigate to `http://127.0.0.1:5000/`.
+   *(Optional: set `FLASK_DEBUG=True` in `.env` to enable Flask debug mode during local development.)*
+   - Available JSON endpoints: `GET /health` (server & model readiness) and `POST /api/predict` (`{"text": "..."}`).
 
 6. *(Optional)* Run preprocessing unit tests:
 
@@ -94,8 +102,19 @@ deteksi_depresi/
    pytest
    ```
 
+## 🧪 Data & Training Pipeline
+
+1. **Crawling (`notebooks/Crawl_data_twitter.ipynb`):** Collects Indonesian Twitter/X posts using keyword queries in `data/queries/` across `Normal`, `Moderate`, and `Severe` categories.
+2. **Annotation (`tools/label_tool/app.py`):** Internal Flask-based labeling helper for reviewing and assigning class labels.
+3. **Cleaning (`notebooks/CleaningData.ipynb`):** Applies text normalization and prepares processed datasets.
+4. **Training & Evaluation (`notebooks/train_model.ipynb`):** Trains the sequence classification model and generates the evaluation figures in `reports/figures/`.
+
 ## ⚠️ Limitations & Ethical Disclaimer
 
 - **Not a Medical Diagnosis:** This application is an academic research prototype and **is NOT a substitute for professional medical or psychological diagnosis**.
 - **Scope & Bias:** The model was trained on Indonesian Twitter/X text and may be sensitive to out-of-domain phrasing, sarcasm, or unseen slang.
 - **Crisis Support:** If you or someone you know is experiencing severe emotional distress or thoughts of self-harm, please seek immediate help from a licensed psychologist, psychiatrist, or local emergency services.
+
+## 👤 Author
+
+- **Muhammad Jovan Adiwijaya Yanuarsyah** (2025) — Undergraduate Thesis (*Skripsi*): *Deteksi Depresi TF-IDF + GRU*.
