@@ -26,14 +26,18 @@ LABELS_PATH = Path(
 )
 VALID_LABELS = {"Depresi", "Tidak Depresi"}
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 app = Flask(__name__, template_folder=str(TOOL_DIR / "templates"))
-app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key-change-me")
+secret_key = os.environ.get("SECRET_KEY")
+if not secret_key:
+    secret_key = os.urandom(24)
+    logger.warning("SECRET_KEY is not set; using an ephemeral random key for this session.")
+app.secret_key = secret_key
 
 DATASET_PATH.parent.mkdir(parents=True, exist_ok=True)
 LABELS_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 try:
     df = pd.read_csv(DATASET_PATH)

@@ -13,7 +13,7 @@ An end-to-end AI-powered web application designed to classify depression risk le
 
 - **Text Preprocessing (`src/preprocessing.py` & `src/slang_dict.json`):** Custom slang normalization and whitelist-based stopword removal to retain crucial negation words and implicit emotional markers.
 - **Feature Selection:** TF-IDF (Term Frequency-Inverse Document Frequency) vocabulary filtration.
-- **Deep Learning Model (TF-IDF + GRU):** Gated Recurrent Unit (GRU) architecture with Spatial Dropout and L2 Regularization. On the thesis evaluation dataset, **TF-IDF + GRU** achieved **98.67% accuracy** and **98.67% macro F1-score**, outperforming the Stacked LSTM baseline in both accuracy and training efficiency.
+- **Deep Learning Model (TF-IDF + Stacked LSTM — Deployed Artifact):** The active model saved in `models/depression_model_multiclass.h5` (trained in `notebooks/train_model.ipynb`) uses a 2-layer Stacked LSTM architecture (`Embedding` → `SpatialDropout1D` → `LSTM(128)` → `LSTM(64)` → `GlobalMaxPooling1D` → `Dense(64)` with L2 regularization → `Dropout(0.5)` → `Dense(3, softmax)`), achieving **98.15% accuracy** across the 1,514-sample evaluation set shown below. *(In the broader thesis comparison, a **TF-IDF + GRU** variant also achieved **98.67% accuracy** and **98.67% macro F1-score** with faster training time.)*
 - **Post-Processing (Positive Guard):** A transparent heuristic layer in Flask (`app/main.py`) to reduce false positives on casual or resilient positive expressions (e.g., *"tetap semangat"*). When triggered (`pos_count >= 2`, `pos_score >= 2`, and no negation token within 2 words before a positive token), the predicted label is adjusted to **Normal** with an explicit **Adjusted by Positive Guard** indicator while still displaying the model's raw probability distribution.
   - Decision thresholds in `app/main.py`: `THRESHOLD_SEVERE = 0.35`, `THRESHOLD_MODERATE = 0.45` (Severe takes priority above `0.35`, followed by Positive Guard, then Moderate above `0.45` and greater than Normal, otherwise Normal).
   - Input limits: maximum `1000` characters per request (`MAX_INPUT_LENGTH = 1000`) and padded sequence length `100` tokens (`MAX_LEN = 100`).
@@ -117,4 +117,4 @@ deteksi_depresi/
 
 ## 👤 Author
 
-- **Muhammad Jovan Adiwijaya Yanuarsyah** (2025) — Undergraduate Thesis (*Skripsi*): *Deteksi Depresi TF-IDF + GRU*.
+- **Muhammad Jovan Adiwijaya Yanuarsyah** (2025) — Undergraduate Thesis (*Skripsi*): *Deteksi Depresi TF-IDF + Stacked LSTM / GRU*.

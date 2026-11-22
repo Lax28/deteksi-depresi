@@ -104,6 +104,40 @@ body {
     transform: translateY(0);
 }
 
+.btn-secondary-custom {
+    background-color: #f4f6fb;
+    color: #5a67d8;
+    border: 1px solid #dce2f7;
+    padding: 12px 22px;
+    border-radius: var(--radius-btn);
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.btn-secondary-custom:hover {
+    background-color: #e9eefb;
+    color: #4c51bf;
+    border-color: #b8c4f4;
+    transform: translateY(-1px);
+}
+
+.shortcut-hint {
+    font-size: 0.78rem;
+    color: #8c95a6;
+}
+
+.shortcut-hint kbd {
+    background-color: #f1f3f9;
+    color: #646e82;
+    border: 1px solid #e1e6f2;
+    border-radius: 5px;
+    padding: 1px 5px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    font-family: inherit;
+    box-shadow: none;
+}
+
 /* --- HASIL PREDIKSI (RESULT BOX) --- */
 .result-box {
     background: #fff;

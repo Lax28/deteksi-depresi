@@ -1,3 +1,4 @@
+import logging
 import os
 import pickle
 import sys
@@ -49,21 +50,38 @@ app = Flask(
     static_folder=str(STATIC_DIR),
 )
 
-# --- LOAD RESOURCES ---
-print("Memuat Model & Tokenizer...")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# --- LOAD RESOURCES (LAZY / EXPLICIT INIT) ---
 model = None
 tokenizer = None
+_resources_loaded = False
 
-if MODEL_PATH.exists() and TOKENIZER_PATH.exists():
-    try:
-        model = tf.keras.models.load_model(MODEL_PATH)
-        with TOKENIZER_PATH.open("rb") as f:
-            tokenizer = pickle.load(f)
-        print("Model & Tokenizer berhasil dimuat.")
-    except Exception as e:
-        print(f"Error loading resources: {e}")
-else:
-    print(f"PERINGATAN: File model/tokenizer tidak ditemukan di {MODEL_DIR}")
+
+def load_resources() -> bool:
+    """Load Keras model and tokenizer into memory once if available."""
+    global model, tokenizer, _resources_loaded
+    if _resources_loaded:
+        return model is not None and tokenizer is not None
+
+    _resources_loaded = True
+    logger.info("Memuat Model & Tokenizer...")
+    if MODEL_PATH.exists() and TOKENIZER_PATH.exists():
+        try:
+            model = tf.keras.models.load_model(MODEL_PATH, compile=False)
+            with TOKENIZER_PATH.open("rb") as f:
+                tokenizer = pickle.load(f)
+            logger.info("Model & Tokenizer berhasil dimuat.")
+            return True
+        except Exception as e:
+            logger.error("Error loading resources: %s", e)
+            model = None
+            tokenizer = None
+            return False
+    else:
+        logger.warning("File model/tokenizer tidak ditemukan di %s", MODEL_DIR)
+        return False
 
 
 # --- FUNGSI SARAN ---
@@ -141,26 +159,29 @@ def predict_text(raw_text: str) -> tuple[dict | None, dict | None, str | None, i
     if len(stripped_text) > MAX_INPUT_LENGTH:
         return None, None, f"Teks terlalu panjang (maksimal {MAX_INPUT_LENGTH} karakter).", 400
 
-    if model is None or tokenizer is None:
+    if not load_resources():
         return None, None, "Model atau tokenizer belum tersedia di server.", 503
 
     clean_text = preprocess_indo(raw_text)
     seq = tokenizer.texts_to_sequences([clean_text])
     oov_idx = tokenizer.word_index.get(tokenizer.oov_token)
-    if oov_idx:
-        seq = [[i for i in s if i != oov_idx] for s in seq]
-
-    if not seq or not seq[0]:
+    has_known_token = bool(
+        seq and seq[0] and (not oov_idx or any(i != oov_idx for i in seq[0]))
+    )
+    if not has_known_token:
         return None, None, "Kata tidak dikenali.", 400
 
-    padded = pad_sequences(seq, maxlen=MAX_LEN, padding="post")
+    padded = pad_sequences(seq, maxlen=MAX_LEN, padding="post", truncating="post")
     probs = model.predict(padded)[0]
 
     guard = evaluate_positive_guard(clean_text)
-    print(
-        f"POS_GUARD | pos={guard['pos_count']} neg={guard['neg_count']} "
-        f"negInd={guard['negind_count']} negNearPos={guard['negation_near_pos']} "
-        f"-> isPositive={guard['is_positive_context']}"
+    logger.info(
+        "POS_GUARD | pos=%d neg=%d negInd=%d negNearPos=%s -> isPositive=%s",
+        guard["pos_count"],
+        guard["neg_count"],
+        guard["negind_count"],
+        guard["negation_near_pos"],
+        guard["is_positive_context"],
     )
 
     final_idx, positive_guard_applied = decide_class(probs, guard["is_positive_context"])
@@ -227,5 +248,6 @@ def index():
 
 
 if __name__ == "__main__":
+    load_resources()
     debug_mode = os.getenv("FLASK_DEBUG", os.getenv("DEBUG", "False")).lower() in ("1", "true", "yes")
     app.run(debug=debug_mode)
