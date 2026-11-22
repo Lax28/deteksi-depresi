@@ -1,4 +1,0 @@
-CLEANING REPORT
-==============================
-Total Data: 8140
-Distribusi: {0: 3175, 1: 2487, 2: 2555}

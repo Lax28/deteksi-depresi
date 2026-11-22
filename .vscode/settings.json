@@ -33,5 +33,6 @@
         "Vectorizer",
         "Versi",
         "VISUALISASI"
-    ]
+    ],
+    "python.terminal.useEnvFile": true
 }

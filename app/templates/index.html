@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deteksi Kesehatan Mental - Bi-LSTM</title>
+    <title>Deteksi Kesehatan Mental - TF-IDF + GRU</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -57,8 +57,18 @@
                             <h3 class="fw-bold text-{{ suggestion.color }} mb-1">
                                 {{ result.label }}
                             </h3>
+                            {% if result.positive_guard_applied %}
+                            <div class="mb-2">
+                                <span class="badge rounded-pill text-bg-info text-white">
+                                    <i class="bi bi-shield-check me-1"></i> Adjusted by Positive Guard
+                                </span>
+                                <small class="d-block text-muted mt-1">
+                                    Label disesuaikan menjadi <strong>Normal</strong> oleh aturan heuristik konteks positif; distribusi di bawah tetap menampilkan probabilitas asli model.
+                                </small>
+                            </div>
+                            {% endif %}
                             <p class="text-muted small">
-                                Tingkat Keyakinan: <strong>{{ result.max_prob }}</strong>
+                                Probabilitas Kelas Terpilih (Model): <strong>{{ result.max_prob }}</strong>
                             </p>
                         </div>
 
@@ -97,7 +107,7 @@
                     <i class="bi bi-info-circle-fill text-primary"></i> <strong>Disclaimer:</strong>
                 </p>
                 <p>
-                    Aplikasi ini menggunakan model <em>Deep Learning</em> (LSTM) sebagai alat bantu penelitian dan 
+                    Aplikasi ini menggunakan model <em>Deep Learning</em> (TF-IDF + GRU) sebagai alat bantu penelitian dan 
                     <span class="text-danger fw-bold">BUKAN pengganti diagnosis medis profesional</span>.
                 </p>
                 <p>
@@ -105,7 +115,7 @@
                     segera hubungi psikolog, psikiater, atau layanan darurat terdekat.
                 </p>
                 <p class="mt-3 mb-0 text-muted opacity-50 small">
-                    Skripsi Muhammad Jovan Adiwijaya yanuarsyah 2025 - Deteksi Depresi TF-IDF & LSTM
+                    Skripsi Muhammad Jovan Adiwijaya Yanuarsyah 2025 - Deteksi Depresi TF-IDF + GRU
                 </p>
             </div>
 
