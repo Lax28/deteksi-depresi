@@ -29,7 +29,7 @@ An end-to-end AI-powered web application designed to classify depression risk le
 
 ![Confusion Matrix](reports/figures/outputCM.png)
 
-![Training & Evaluation Curves](reports/figures/output.png)
+![Training & Validation Accuracy and Loss Curves](reports/figures/outputgrafiklossdanakurasi.png)
 
 ## 📁 Project Structure
 
