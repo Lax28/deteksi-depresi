@@ -25,6 +25,12 @@ An end-to-end AI-powered web application designed to classify depression risk le
 
 *The TF-IDF + GRU model operates ~31.4% faster than the Stacked LSTM while maintaining strong precision on detecting Suicidal Ideation.*
 
+### Evaluation Visuals
+
+![Confusion Matrix](reports/figures/outputCM.png)
+
+![Training & Evaluation Curves](reports/figures/output.png)
+
 ## 📁 Project Structure
 
 ```text
@@ -81,6 +87,12 @@ deteksi_depresi/
    *(or `python -m app.main`)*
 
 5. Open your browser and navigate to `http://127.0.0.1:5000/`.
+
+6. *(Optional)* Run preprocessing unit tests:
+
+   ```bash
+   pytest
+   ```
 
 ## ⚠️ Limitations & Ethical Disclaimer
 
