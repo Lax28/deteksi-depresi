@@ -43,6 +43,8 @@ deteksi_depresi/
 ├── notebooks/                  # Data crawling, cleaning, and model training notebooks
 ├── tools/
 │   └── label_tool/             # Internal Flask annotation helper
+├── tests/
+│   └── test_preprocessing.py   # Basic preprocessing unit tests (pytest)
 ├── data/
 │   ├── raw/
 │   ├── processed/
@@ -59,17 +61,12 @@ deteksi_depresi/
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/Lax28/deteksi-depresi-nlp.git
-   cd deteksi-depresi-nlp
+   git clone https://github.com/Lax28/deteksi-depresi.git
+   cd deteksi-depresi
    ```
 
 2. Install dependencies:
 
-<<<<<<< HEAD
-    ```Bash
-    python app.py
-4. Open your browser and navigate to [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
-=======
    ```bash
    pip install -r requirements.txt
    ```
@@ -90,4 +87,3 @@ deteksi_depresi/
 - **Not a Medical Diagnosis:** This application is an academic research prototype and **is NOT a substitute for professional medical or psychological diagnosis**.
 - **Scope & Bias:** The model was trained on Indonesian Twitter/X text and may be sensitive to out-of-domain phrasing, sarcasm, or unseen slang.
 - **Crisis Support:** If you or someone you know is experiencing severe emotional distress or thoughts of self-harm, please seek immediate help from a licensed psychologist, psychiatrist, or local emergency services.
->>>>>>> 0a47496 (Refactor project structure, fix Flask paths, and prevent data leakage)
